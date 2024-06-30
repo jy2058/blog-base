@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.jiyeon.kim.blogbase.Repository.BlogRepository;
 import me.jiyeon.kim.blogbase.domain.Article;
 import me.jiyeon.kim.blogbase.dto.AddArticleRequestDto;
+import me.jiyeon.kim.blogbase.dto.UpdateArticleRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -126,5 +128,34 @@ class BlogApiControllerTest {
         // then
         List<Article> articles = blogRepository.findAll();
         assertThat(articles).isEmpty();
+    }
+
+    @Test
+    @DisplayName("updateArticle: 블로그 글 수정 성공")
+    public void updateArticle() throws Exception{
+        // given
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = blogRepository.save(Article.builder().title(title).content(content).build());
+
+        final String newTitle = "수정 title";
+        final String newContent = "수정 content";
+
+        UpdateArticleRequestDto requestDto = new UpdateArticleRequestDto(newTitle, newContent);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(put(url, savedArticle.getId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(requestDto)));
+
+        // then
+        resultActions.andExpect(status().isOk());
+        Article article = blogRepository.findById(savedArticle.getId()).get();
+
+        assertThat(article.getTitle()).isEqualTo(newTitle);
+        assertThat(article.getContent()).isEqualTo(newContent);
+
     }
 }

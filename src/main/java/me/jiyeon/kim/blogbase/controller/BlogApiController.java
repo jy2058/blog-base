@@ -3,8 +3,10 @@ package me.jiyeon.kim.blogbase.controller;
 import lombok.RequiredArgsConstructor;
 import me.jiyeon.kim.blogbase.domain.Article;
 import me.jiyeon.kim.blogbase.dto.AddArticleRequestDto;
-import me.jiyeon.kim.blogbase.dto.ArticleResponse;
+import me.jiyeon.kim.blogbase.dto.ArticleResponseDto;
+import me.jiyeon.kim.blogbase.dto.UpdateArticleRequestDto;
 import me.jiyeon.kim.blogbase.service.BlogService;
+import org.apache.coyote.Request;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,23 +28,30 @@ public class BlogApiController {
     }
 
     @GetMapping("/api/articles")
-    public ResponseEntity<List<ArticleResponse>> findAllArticles() {
-        List<ArticleResponse> articles = blogService.findAll()
+    public ResponseEntity<List<ArticleResponseDto>> findAllArticles() {
+        List<ArticleResponseDto> articles = blogService.findAll()
                 .stream()
-                .map(ArticleResponse::new)
+                .map(ArticleResponseDto::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(articles);
     }
 
     @GetMapping("/api/articles/{id}")
-    public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
+    public ResponseEntity<ArticleResponseDto> findArticle(@PathVariable long id) {
         Article article = blogService.findById(id);
-        return ResponseEntity.ok().body(new ArticleResponse(article));
+        return ResponseEntity.ok().body(new ArticleResponseDto(article));
     }
 
     @DeleteMapping("/api/articles/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable long id) {
         blogService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/api/articles/{id}")
+    public ResponseEntity<Article> updateArticle(@PathVariable long id
+            , @RequestBody UpdateArticleRequestDto requestDto) {
+        Article updatedArticle = blogService.update(id, requestDto);
+        return ResponseEntity.ok().body(updatedArticle);
     }
 }
