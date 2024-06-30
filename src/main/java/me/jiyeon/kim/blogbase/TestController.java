@@ -10,10 +10,17 @@ import java.util.List;
 public class TestController {
     @Autowired
     TestService testService;
+    @Autowired
+    MemberService memberService;
 
     @GetMapping("/test")
     public List<Member> getAllMembers(){
         List<Member> members = testService.getAllMembers();
         return members;
+    }
+
+    @GetMapping("/testMember")
+    public void testMember(){
+        memberService.test();
     }
 }
