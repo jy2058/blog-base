@@ -13,5 +13,12 @@ spring:
   h2:
     console:
       enabled: true
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
 
 
