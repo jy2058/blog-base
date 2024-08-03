@@ -22,4 +22,6 @@ spring:
   thymeleaf:
     cache: false
 
-
+jwt:
+  issuer: jydev763@gmail.com
+  secret_key: blog-base

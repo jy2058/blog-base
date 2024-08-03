@@ -24,6 +24,7 @@ public class UserApiController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
+        // SecurityContextHolder : 스프링 시큐리티에서 인증이 완료된 후 Authentication 객체를 저장하는 곳
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
         return "redirect:/login";
     }
