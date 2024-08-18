@@ -1,6 +1,8 @@
 spring:
   application:
     name: blog-base
+  config:
+    import: application-secret.yml
   jpa:
     show-sql: true
     properties:
@@ -8,9 +10,6 @@ spring:
         format_sql: true
     # data 초기화
     defer-datasource-initialization: true
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
   h2:
     console:
       enabled: true
@@ -22,6 +21,4 @@ spring:
   thymeleaf:
     cache: false
 
-jwt:
-  issuer: jydev763@gmail.com
-  secret_key: blog-base
+

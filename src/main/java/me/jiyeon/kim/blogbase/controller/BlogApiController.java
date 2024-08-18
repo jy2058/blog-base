@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +22,8 @@ public class BlogApiController {
     private final BlogService blogService;
 
     @PostMapping("/api/articles")
-    public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequestDto requestDto) {
-        Article savedArticle = blogService.save(requestDto);
+    public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequestDto requestDto, Principal principal) {
+        Article savedArticle = blogService.save(requestDto, principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedArticle);
     }
