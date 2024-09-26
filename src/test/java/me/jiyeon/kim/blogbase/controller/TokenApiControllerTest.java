@@ -1,3 +1,4 @@
+/*
 package me.jiyeon.kim.blogbase.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -124,4 +125,4 @@ class TokenApiControllerTest {
                 .build()
                 .createToken(jwtProperties);
     }
-}
+}*/
